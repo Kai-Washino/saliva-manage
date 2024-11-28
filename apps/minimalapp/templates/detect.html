@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Microphone Audio Display</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css')}}"
+    >   
+</head>
+<body>
+    <h1>Detect Audio</h1>
+    <div id="audio-receive-status">
+        <p>Received Audio Count: <span id="receive-count">0</span></p>
+        <p>Status: <span id="status-message">Waiting for audio...</span></p>
+    </div>
+    <script src="{{ url_for('static', filename='js/audio_detect.js') }}"></script>
+
+    <script>
+        
+    </script>
+</body>
+</html>
