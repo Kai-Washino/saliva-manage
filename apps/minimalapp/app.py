@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+import requests
 
 app = Flask(__name__)
 
 receive_count = 0
 threshold_value = 0.2
+M5_IP = "http://10.32.130.89"
 
 @app.route('/')
 def index():
@@ -31,6 +33,20 @@ def receive_audio():
     # JSON形式でレスポンスを返す
     return jsonify({"message": "Audio received", "count": receive_count})
 
+@app.route('/sound')
+def sound():
+    return render_template('sound.html')
+
+@app.route('/buzz', methods=['POST'])
+def buzz():
+    try:
+        response = requests.get(f"{M5_IP}/buzz")
+        if response.status_code == 200:
+            return redirect(url_for('sound'))
+        else:
+            return "Failed to buzz", 500
+    except requests.exceptions.RequestException as e:
+        return f"Error: {e}", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
