@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 receive_count = 0
 threshold_value = 0.2
-M5_IP = "http://10.32.130.89"
 
 @app.route('/')
 def index():
@@ -39,14 +38,20 @@ def sound():
 
 @app.route('/buzz', methods=['POST'])
 def buzz():
+    data = request.get_json()
+    m5_ip = data.get('ip')
+    if not m5_ip:
+        return jsonify({"success": False, "message": "No IP address provided"}), 400
+
     try:
-        response = requests.get(f"{M5_IP}/buzz")
+        response = requests.get(f"http://{m5_ip}/buzz")
         if response.status_code == 200:
-            return redirect(url_for('sound'))
+            return jsonify({"success": True, "message": "Buzzing"})
         else:
-            return "Failed to buzz", 500
+            return jsonify({"success": False, "message": "Failed to buzz"}), 500
     except requests.exceptions.RequestException as e:
-        return f"Error: {e}", 500
+        return jsonify({"success": False, "message": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)
