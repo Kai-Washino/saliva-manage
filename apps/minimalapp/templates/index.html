@@ -14,8 +14,10 @@
     <canvas id="audio-visualizer"></canvas>
     <script src="{{ url_for('static', filename='js/display_audio.js') }}"></script>
 
-    <script>
-        
-    </script>
+    <div id="audio-receive-status">
+        <p>Received Audio Count: <span id="receive-count">0</span></p>
+        <p>Status: <span id="status-message">Waiting for audio...</span></p>
+    </div>
+    <script src="{{ url_for('static', filename='js/audio_detect.js') }}"></script>
 </body>
 </html>
