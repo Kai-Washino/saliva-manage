@@ -8,6 +8,10 @@ receive_count = 0
 def index():
     return render_template('index.html')
 
+@app.route('/display')
+def display():
+    return render_template('display.html')
+
 @app.route('/detect')
 def detect():
     return render_template('detect.html')
