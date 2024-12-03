@@ -25,7 +25,7 @@ function detectSound(stream) {
 
     // 音のレベルを判定（閾値を超えたら録音を開始）
     const rms = Math.sqrt(dataArray.reduce((sum, val) => sum + val * val, 0) / dataArray.length);
-    if (rms > 0.05 && !recording) { // 閾値0.05（調整可能）
+    if (rms > thresholdValue && !recording) { // 閾値0.05（調整可能）
         console.log(recording);
         recording = true;
         recordAudio(stream);

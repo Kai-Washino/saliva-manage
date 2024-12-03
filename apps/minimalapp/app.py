@@ -3,10 +3,11 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 receive_count = 0
+threshold_value = 0.05
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', threshold_value=threshold_value)
 
 @app.route('/display')
 def display():
@@ -14,7 +15,7 @@ def display():
 
 @app.route('/detect')
 def detect():
-    return render_template('detect.html')
+    return render_template('detect.html', threshold_value=threshold_value)
 
 @app.route('/receive_audio', methods=['POST'])
 def receive_audio():
