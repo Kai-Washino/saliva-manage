@@ -19,8 +19,8 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         source.connect(analyser);
 
         // 1分間のデータを保持するためのバッファを作成
-        const sampleRate = 60; // 1秒間に60回サンプリング（表示用のサンプル数）
-        const bufferSize = sampleRate * 600; // 60秒間のデータを保持
+        const sampleRate = 30; // 1秒間に60回サンプリング（表示用のサンプル数）
+        const bufferSize = sampleRate * 6000; // 60秒間のデータを保持
         const audioBuffer = new Float32Array(bufferSize).fill(0);
         let bufferIndex = 0; // バッファの現在の位置を示すインデックス
 
@@ -40,11 +40,13 @@ navigator.mediaDevices.getUserMedia({ audio: true })
 
             // キャンバスをクリア
             canvasCtx.fillStyle = 'rgb(240, 240, 240)';
-            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);                    
 
             // 波形を描画
-            canvasCtx.lineWidth = 2;
-            canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+            canvasCtx.lineWidth = 1;
+            const isAboveThreshold = dataArray.some(value => Math.abs(value) > thresholdValue);
+            canvasCtx.strokeStyle = isAboveThreshold ? 'rgb(0, 255, 0)' : 'rgb(0, 0, 0)'; // 閾値以上で緑色、それ以外で黒色
+
             canvasCtx.beginPath();
 
             const sliceWidth = canvas.width * 1.0 / bufferSize; // 1サンプルあたりのキャンバス幅
@@ -66,6 +68,25 @@ navigator.mediaDevices.getUserMedia({ audio: true })
 
             canvasCtx.lineTo(canvas.width, canvas.height / 2);
             canvasCtx.stroke(); // 描画を完了
+
+            // 上下の閾値を描画
+            canvasCtx.lineWidth = 1;
+            canvasCtx.strokeStyle = 'rgb(255, 0, 0)'; // 赤色で閾値を描画
+            canvasCtx.beginPath();
+
+            // 閾値のY座標（音波形は正規化されて -1 から 1 の範囲）
+            const positiveThresholdY = canvas.height * (1 - (thresholdValue * 0.5 + 0.5));
+            const negativeThresholdY = canvas.height * (1 - (-thresholdValue * 0.5 + 0.5));
+
+            // 上側の閾値の線
+            canvasCtx.moveTo(0, positiveThresholdY);
+            canvasCtx.lineTo(canvas.width, positiveThresholdY);
+
+            // 下側の閾値の線
+            canvasCtx.moveTo(0, negativeThresholdY);
+            canvasCtx.lineTo(canvas.width, negativeThresholdY);
+
+            canvasCtx.stroke();
         }
 
         // 描画を開始

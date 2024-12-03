@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 receive_count = 0
-threshold_value = 0.05
+threshold_value = 0.2
 
 @app.route('/')
 def index():
