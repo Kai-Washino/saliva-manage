@@ -13,7 +13,7 @@ document.getElementById('buzz-button').addEventListener('click', () => {
         return;
     }
 
-    fetch('buzz', {
+    fetch('/sound/buzz', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
