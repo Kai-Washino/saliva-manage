@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
-import requests
+from flask import Blueprint, render_template, current_app, jsonify
 
 display = Blueprint(
     "display",
@@ -11,5 +10,10 @@ display = Blueprint(
 threshold_value = 0.2
 
 @display.route("/")
-def index():
+def index():    
     return render_template("display/index.html", threshold_value=threshold_value)
+
+@display.route("/mastication_count", methods=["GET"])
+def get_mastication_count():
+    mastication_count = current_app.config['mastication']['count']
+    return jsonify({"mastication_count": mastication_count})
