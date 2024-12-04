@@ -13,7 +13,7 @@ document.getElementById('buzz-button').addEventListener('click', () => {
         return;
     }
 
-    fetch('buzz', {
+    fetch('/sound/buzz', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,7 +25,35 @@ document.getElementById('buzz-button').addEventListener('click', () => {
         if (data.success) {
             // alert('M5 Stick C is buzzing!');
         } else {
-            alert('Failed to buzz M5 Stick C: ' + data.message);
+            alert('失敗: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Error: ' + error);
+    });
+});
+
+
+// 条件づけのボタンを押したときのイベントリスナー
+document.getElementById('conditioning-button').addEventListener('click', () => {
+    if (!m5IpAddress) {
+        alert('IPアドレスを入力してください');
+        return;
+    }
+
+    fetch('/sound/conditioning', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ip: m5IpAddress })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // alert('M5 Stick C is buzzing!');
+        } else {
+            alert('失敗: ' + data.message);
         }
     })
     .catch(error => {
