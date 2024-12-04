@@ -13,11 +13,34 @@
         />   
     </head>
     <body>        
-        <div class="col-md-10 text-right dt-image-register-btn">
-            <a href="" class="btn btn-primary">計測開始</a>
+        <div class="row">
+            <div class="col-md-11 text-right">
+                <form id="ip-form">
+                    <label for="ip-address">M5StickCのIPアドレス</label>
+                    <input type="text" id="ip-address" name="ip-address" required>
+                    <button class="btn btn-danger" type="button" id="save-ip">保存</button>
+                </form>
+                <form id="buzz-form">
+                    <button class="btn btn-warning" type="button" id="buzz-button">音提示</button>
+                </form>
+            </div>
+            
+            <canvas class="offset-md-1 col-md-10 text-center" id="audio-visualizer"></canvas>
+        
+            <div class="col-md-7 text-center">
+                <p>推定唾液分泌量</p>
+                <p>{{ threshold_value }}</p>
+            </div>
+            <div class="col-md-4 text-right">
+                <a href="" class="btn btn-primary">計測開始</a>
+                <a href="" class="btn btn-primary">条件づけ</a>
+            </div>
         </div>
-        <div class="col-md-10 text-right dt-image-register-btn">
-            <a href="" class="btn btn-primary">条件づけ</a>
-        </div>
+        <script>
+            const thresholdValue = {{ threshold_value }};
+        </script>
+        <script src="{{ url_for('static', filename='js/display_audio.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/sound.js') }}"></script>
+      
     </body>
 </html>
