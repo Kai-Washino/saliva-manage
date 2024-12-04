@@ -14,11 +14,17 @@
     </head>
     <body>        
         <div class="row">
-            <form id="ip-form" class="col-md-11 text-right">
-                <label for="ip-address">M5StickCのIPアドレス</label>
-                <input type="text" id="ip-address" name="ip-address" required>
-                <button class="btn btn-danger" type="button" id="save-ip">保存</button>
-            </form>
+            <div class="col-md-11 text-right">
+                <form id="ip-form">
+                    <label for="ip-address">M5StickCのIPアドレス</label>
+                    <input type="text" id="ip-address" name="ip-address" required>
+                    <button class="btn btn-danger" type="button" id="save-ip">保存</button>
+                </form>
+                <form id="buzz-form">
+                    <button class="btn btn-warning" type="button" id="buzz-button">音提示</button>
+                </form>
+            </div>
+            
             <canvas class="offset-md-1 col-md-10 text-center" id="audio-visualizer"></canvas>
         
             <div class="col-md-7 text-center">
@@ -34,6 +40,7 @@
             const thresholdValue = {{ threshold_value }};
         </script>
         <script src="{{ url_for('static', filename='js/display_audio.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/sound.js') }}"></script>
       
     </body>
 </html>
