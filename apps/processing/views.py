@@ -18,3 +18,8 @@ def receive_audio():
     
     # JSON形式でレスポンスを返す
     return jsonify({"message": "Audio received", "count": current_app.config['mastication']['count']})
+
+@processing.route('/stop_measurement', methods=['POST'])
+def stop_measurement():   
+    current_app.config['mastication']['count'] = 0
+    return jsonify({"message": "Audio stopped, mastication count reset"}), 200

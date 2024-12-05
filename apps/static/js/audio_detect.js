@@ -20,6 +20,7 @@ document.getElementById('measure-button').addEventListener('click', function() {
         this.textContent = '計測開始';
         this.classList.remove('btn-danger');
         this.classList.add('btn-primary');        
+        stopAudio();
     }
 });
 
@@ -95,4 +96,22 @@ function sendAudioToServer(audioBlob) {
     .catch(error => {
         console.error('Error:', error);        
     });
+}
+
+function stopAudio() {
+    fetch('/processing/stop_measurement', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ action: 'stop' })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
 }
