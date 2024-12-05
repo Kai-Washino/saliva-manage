@@ -32,12 +32,12 @@
                 <p>咀嚼: <span id="mastication-count">0</span></p>
             </div>
             <div class="col-md-4 text-right">                
-                <a href="" class="btn btn-primary">計測開始</a>
+                <button class="btn btn-primary" type="button" id="measure-button">計測開始</button>
                 <button class="btn btn-primary" type="button" id="conditioning-button">条件づけ</button>                
             </div>
         </div>
         <script>
-            const thresholdValue = {{ threshold_value }};
+            const thresholdValue = {{ threshold_value }};            
             // 咀嚼カウントを定期的にサーバーから取得して表示を更新する
             function updateMasticationCount() {
                 fetch('/display/mastication_count')

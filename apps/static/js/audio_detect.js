@@ -2,21 +2,43 @@ let audioContext;
 let analyser;
 let dataArray;
 let recording = false;
+let isMeasuring = false;
+
+console.log(isMeasuring)
+
+// ボタンのクリックイベント
+document.getElementById('measure-button').addEventListener('click', function() {
+    // フラグを反転
+    isMeasuring = !isMeasuring;
+
+    // ボタンのテキストと色を変更
+    if (isMeasuring) {
+        this.textContent = '計測中...';
+        this.classList.remove('btn-primary');
+        this.classList.add('btn-danger');        
+    } else {
+        this.textContent = '計測開始';
+        this.classList.remove('btn-danger');
+        this.classList.add('btn-primary');        
+    }
+});
 
 navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(function(stream) {
+.then(function(stream) {        
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const source = audioContext.createMediaStreamSource(stream);
         analyser = audioContext.createAnalyser();
         analyser.fftSize = 2048;
         dataArray = new Float32Array(analyser.fftSize);
 
-        source.connect(analyser);        
+        source.connect(analyser);       
         detectSound(stream);
-    })
-    .catch(function(err) {
-        console.error('The following error occurred: ' + err);
-    });
+         
+        
+})
+.catch(function(err) {
+    console.error('The following error occurred: ' + err);
+});
 
 // 音の検出を行う関数
 function detectSound(stream) {
@@ -25,11 +47,9 @@ function detectSound(stream) {
 
     // 音のレベルを判定（閾値を超えたら録音を開始）
     const rms = Math.sqrt(dataArray.reduce((sum, val) => sum + val * val, 0) / dataArray.length);
-    if (rms > thresholdValue && !recording) {
-        console.log(recording);
+    if (rms > thresholdValue && !recording && isMeasuring) {        
         recording = true;
-        recordAudio(stream);
-        console.log(recording);
+        recordAudio(stream);        
     }
 }
 
