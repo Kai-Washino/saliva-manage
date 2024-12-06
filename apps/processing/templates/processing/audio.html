@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>音声表示</title>
+</head>
+<body>
+    <h1>音声ファイル</h1>
+    <audio controls>
+        <source src="{{ url_for('static', filename=audio_path) }}" type="audio/wav">
+        お使いのブラウザはオーディオ要素をサポートしていません。
+    </audio>
+</body>
+</html>

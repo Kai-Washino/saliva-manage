@@ -264,3 +264,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,vscode
 
 *.pt 
+/apps/static/audio
+/apps/static/images
