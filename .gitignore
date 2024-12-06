@@ -266,3 +266,4 @@ pyrightconfig.json
 *.pt 
 /apps/static/audio
 /apps/static/images
+/models/pretrained

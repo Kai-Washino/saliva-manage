@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from flask import Blueprint, request, jsonify, current_app, send_file, render_template
 from services.signal_service import SignalProcessingService
+from services.deep_learning_service import DeepLearningService
 from io import BytesIO
 from pathlib import Path
 from pydub import AudioSegment
@@ -17,6 +18,8 @@ processing = Blueprint(
 )
 
 signal_service = SignalProcessingService()
+model_path = Path('models/pretrained/cnn_20241206_binary_ep50_bs32_4')
+deeplaerning_service = DeepLearningService(model_path)
 
 @processing.route('/receive_audio', methods=['POST'])
 def receive_audio():    
@@ -30,7 +33,10 @@ def receive_audio():
     audio_buffer.seek(0)    
 
     audio_array, sample_rate = sf.read(audio_buffer)
-    normalized_spectrogram = signal_service.stft_audio(audio_array, sample_rate)    
+    normalized_spectrogram = signal_service.stft_audio(audio_array, sample_rate)
+    input_data = np.expand_dims(normalized_spectrogram, axis=0)
+    label = deeplaerning_service.predict(input_data)
+    print(label)
     
     """
     # 音声データやスペクトログラム画像の保存用

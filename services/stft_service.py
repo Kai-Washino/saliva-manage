@@ -25,5 +25,10 @@ class STFTService:
             spectrogram.append(power)
         
         self.spectrogram = np.array(spectrogram).T
-        # スペクトログラムを時間に沿った配列に変換
+        if type(self.spectrogram) == tuple:
+            self.spectrogram = np.abs(self.spectrogram)   
+
+        if self.spectrogram.ndim == 1:
+            self.spectrogram = spectrogram.reshape(-1, 1)     
+                    
         return  self.spectrogram
