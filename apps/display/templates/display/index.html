@@ -29,7 +29,8 @@
         
             <div class="col-md-7 text-center">
                 <p>推定唾液分泌量: {{ threshold_value }}</p>
-                <p>咀嚼: <span id="mastication-count">0</span></p>
+                <!-- <p>咀嚼: <span id="mastication-count">0</span></p> -->
+                <p>5秒間の咀嚼: <span id="mastication-status">true</span></p>
             </div>
             <div class="col-md-4 text-right">                
                 <button class="btn btn-primary" type="button" id="measure-button">計測開始</button>
@@ -37,22 +38,11 @@
             </div>
         </div>
         <script>
-            const thresholdValue = {{ threshold_value }};            
-            // 咀嚼カウントを定期的にサーバーから取得して表示を更新する
-            function updateMasticationCount() {
-                fetch('/display/mastication_count')
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('mastication-count').textContent = data.mastication_count;
-                    })
-                    .catch(error => console.error('Error fetching mastication count:', error));
-            }
-
-            // 2秒ごとに更新
-            setInterval(updateMasticationCount, 2000);
+            const thresholdValue = {{ threshold_value }};                        
         </script>
         <script src="{{ url_for('static', filename='js/display_audio.js') }}"></script>
         <script src="{{ url_for('static', filename='js/sound.js') }}"></script>
         <script src="{{ url_for('static', filename='js/audio_detect.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/reflect_mastication.js') }}"></script>
     </body>
 </html>

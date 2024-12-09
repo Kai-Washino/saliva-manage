@@ -9,6 +9,10 @@ from pathlib import Path
 from pydub import AudioSegment
 import librosa
 import soundfile as sf
+import time
+
+# 咀嚼状態を追跡するデータ構造
+mastication_history = []
 
 processing = Blueprint(
     "processing",
@@ -38,6 +42,17 @@ def receive_audio():
     label = deeplaerning_service.predict(input_data)
     print(label)
     
+    is_mastication = label[0][0] <= 0.5
+    current_time = time.time()
+
+    # 過去5秒以内のデータのみ保持
+    mastication_history.append((current_time, is_mastication))
+    mastication_history[:] = [(t, status) for t, status in mastication_history if t > current_time - 5]
+
+    # 過去5秒間にTrueが1つでもあればstatusをTrueに設定
+    current_app.config['mastication']['status'] = any(status for _, status in mastication_history)
+
+    
     """
     # 音声データやスペクトログラム画像の保存用
     audio_path = save_audio_file(audio_data)
@@ -46,10 +61,10 @@ def receive_audio():
     """
     
     # 音声データを受け取ったことを示す処理（ここでは単純にカウントを増やすだけ）
-    current_app.config['mastication']['count'] += 1    
+    # current_app.config['mastication']['count'] += 1    
     
     # JSON形式でレスポンスを返す
-    return jsonify({"message": "Audio received", "count": current_app.config['mastication']['count']}), 200
+    return jsonify({"message": "Audio received"}), 200
 
 @processing.route('/stop_measurement', methods=['POST'])
 def stop_measurement():   

@@ -1,6 +1,6 @@
 from flask import Flask
 
-mastication = {"status": None,
+mastication = {"status": False,
                "count": 0}
 
 def create_app():    

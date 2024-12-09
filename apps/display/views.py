@@ -17,3 +17,8 @@ def index():
 def get_mastication_count():
     mastication_count = current_app.config['mastication']['count']
     return jsonify({"mastication_count": mastication_count})
+
+@display.route("/is_mastication", methods=["GET"])
+def get_is_mastication():
+    is_mastication = current_app.config['mastication']['status']
+    return jsonify({"is_mastication": is_mastication})

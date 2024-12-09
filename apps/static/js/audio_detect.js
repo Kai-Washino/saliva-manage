@@ -91,7 +91,7 @@ function sendAudioToServer(audioBlob) {
         return response.json();
     })
     .then(data => {
-        console.log(data.message + " - Count: " + data.count);        
+        console.log(data.message);        
     })
     .catch(error => {
         console.error('Error:', error);        
