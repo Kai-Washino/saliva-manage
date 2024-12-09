@@ -1,6 +1,7 @@
 from flask import Flask
 
 mastication = {"status": False,
+               "last_recognized": None,
                "count": 0}
 
 def create_app():    

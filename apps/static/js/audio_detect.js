@@ -3,8 +3,9 @@ let analyser;
 let dataArray;
 let recording = false;
 let isMeasuring = false;
+let measurementInterval = null;
 
-console.log(isMeasuring)
+console.log(measurementInterval)
 
 // ボタンのクリックイベント
 document.getElementById('measure-button').addEventListener('click', function() {
@@ -16,10 +17,23 @@ document.getElementById('measure-button').addEventListener('click', function() {
         this.textContent = '計測中...';
         this.classList.remove('btn-primary');
         this.classList.add('btn-danger');        
+
+        if (!measurementInterval) {
+            measurementInterval = setInterval(() => {
+                triggerSoundOnMastication();
+            }, 5000);        
+            console.log(measurementInterval)
+        }
     } else {
         this.textContent = '計測開始';
         this.classList.remove('btn-danger');
         this.classList.add('btn-primary');        
+
+        if (measurementInterval) {
+            clearInterval(measurementInterval);
+            measurementInterval = null;
+        }
+
         stopAudio();
     }
 });

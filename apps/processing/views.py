@@ -45,6 +45,9 @@ def receive_audio():
     is_mastication = label[0][0] <= 0.5
     current_time = time.time()
 
+    if is_mastication:
+        current_app.config['mastication']['last_recognized'] = current_time
+
     # 過去5秒以内のデータのみ保持
     mastication_history.append((current_time, is_mastication))
     mastication_history[:] = [(t, status) for t, status in mastication_history if t > current_time - 5]
